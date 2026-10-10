@@ -1,0 +1,218 @@
+/* NIIB Institute — Frontend JS */
+(function() {
+    'use strict';
+
+    // Lazy load images
+    document.querySelectorAll('img:not([loading])').forEach(function(img){ img.setAttribute('loading','lazy'); });
+
+    // -------------- Mobile menu --------------
+    // Submenu toggle (accordion-style on mobile)
+    document.querySelectorAll('.main-menu .submenu-toggle').forEach(function(btn){
+        btn.addEventListener('click', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            var parent = btn.closest('.has-dropdown');
+            if (!parent) return;
+            var willOpen = !parent.classList.contains('open');
+            // Close siblings for a clean accordion
+            parent.parentElement.querySelectorAll('.has-dropdown.open').forEach(function(o){
+                if (o !== parent) {
+                    o.classList.remove('open');
+                    var t = o.querySelector('.submenu-toggle');
+                    if (t) t.setAttribute('aria-expanded','false');
+                }
+            });
+            parent.classList.toggle('open', willOpen);
+            btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+        });
+    });
+
+    // Close mobile menu when a real navigation link is tapped
+    document.querySelectorAll('.main-menu a').forEach(function(a){
+        a.addEventListener('click', function(){
+            if (window.innerWidth <= 991) {
+                document.body.classList.remove('nav-open');
+            }
+        });
+    });
+
+    // ESC key closes the mobile menu
+    document.addEventListener('keydown', function(e){
+        if (e.key === 'Escape') document.body.classList.remove('nav-open');
+    });
+
+    // Close mobile menu if resized up to desktop
+    window.addEventListener('resize', function(){
+        if (window.innerWidth > 991) {
+            document.body.classList.remove('nav-open');
+            document.querySelectorAll('.has-dropdown.open').forEach(function(o){ o.classList.remove('open'); });
+        }
+    });
+
+    // -------------- Related Programs carousel --------------
+    document.querySelectorAll('[data-carousel]').forEach(function(carousel){
+        var track = carousel.querySelector('[data-track]');
+        var dotsBox = carousel.querySelector('[data-dots]');
+        var prevBtn = carousel.querySelector('[data-dir="prev"]');
+        var nextBtn = carousel.querySelector('[data-dir="next"]');
+        if (!track) return;
+
+        var cards = track.querySelectorAll('.related-card');
+        if (!cards.length) return;
+
+        function perPage(){ return window.innerWidth >= 640 ? 2 : 1; }
+        function pageCount(){ return Math.max(1, Math.ceil(cards.length / perPage())); }
+
+        function buildDots(){
+            if (!dotsBox) return;
+            dotsBox.innerHTML = '';
+            var n = pageCount();
+            if (n <= 1) return;
+            for (var i = 0; i < n; i++){
+                var b = document.createElement('button');
+                b.type = 'button';
+                b.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+                b.dataset.page = String(i);
+                b.addEventListener('click', function(e){
+                    var p = parseInt(e.currentTarget.dataset.page, 10);
+                    scrollToPage(p);
+                });
+                dotsBox.appendChild(b);
+            }
+        }
+
+        function currentPage(){
+            var step = track.clientWidth;
+            return step ? Math.round(track.scrollLeft / step) : 0;
+        }
+
+        function updateUi(){
+            var cur = currentPage();
+            var n = pageCount();
+            if (dotsBox){
+                dotsBox.querySelectorAll('button').forEach(function(b, i){
+                    b.classList.toggle('is-active', i === cur);
+                });
+            }
+            if (prevBtn) prevBtn.disabled = cur <= 0;
+            if (nextBtn) nextBtn.disabled = cur >= n - 1;
+        }
+
+        function scrollToPage(p){
+            var n = pageCount();
+            p = Math.max(0, Math.min(p, n - 1));
+            track.scrollTo({ left: track.clientWidth * p, behavior: 'smooth' });
+        }
+
+        if (prevBtn) prevBtn.addEventListener('click', function(){ scrollToPage(currentPage() - 1); });
+        if (nextBtn) nextBtn.addEventListener('click', function(){ scrollToPage(currentPage() + 1); });
+        track.addEventListener('scroll', updateUi, { passive: true });
+
+        var resizeT;
+        window.addEventListener('resize', function(){
+            clearTimeout(resizeT);
+            resizeT = setTimeout(function(){ buildDots(); updateUi(); }, 120);
+        });
+
+        buildDots();
+        updateUi();
+    });
+
+    // Counter animation
+    var counters = document.querySelectorAll('[data-counter]');
+    if (counters.length && 'IntersectionObserver' in window) {
+        var obs = new IntersectionObserver(function(entries){
+            entries.forEach(function(en){
+                if (!en.isIntersecting) return;
+                var el = en.target;
+                if (el.dataset.done) return;
+                el.dataset.done = '1';
+                var target = parseInt(el.dataset.counter, 10) || 0;
+                var step = Math.max(1, Math.floor(target / 80));
+                var cur = 0;
+                var t = setInterval(function(){
+                    cur += step;
+                    if (cur >= target) { cur = target; clearInterval(t); }
+                    el.textContent = cur.toLocaleString();
+                }, 25);
+            });
+        }, { threshold: .25 });
+        counters.forEach(function(c){ obs.observe(c); });
+    }
+
+    // Accordion
+    document.querySelectorAll('.accordion-item button').forEach(function(btn){
+        btn.addEventListener('click', function(){
+            var item = btn.closest('.accordion-item');
+            var open = item.classList.contains('open');
+            item.parentElement.querySelectorAll('.accordion-item').forEach(function(i){ i.classList.remove('open'); });
+            if (!open) item.classList.add('open');
+        });
+    });
+
+    // reCAPTCHA token fetcher — returns a Promise<string|null>
+    function getCaptchaToken(form) {
+        var cfg = window.NIIB_RECAPTCHA;
+        if (!cfg || !window.grecaptcha) return Promise.resolve(null);
+        if (cfg.mode === 'v3') {
+            return new Promise(function(resolve){
+                grecaptcha.ready(function(){
+                    grecaptcha.execute(cfg.siteKey, { action: cfg.action || 'submit' })
+                        .then(function(token){ resolve(token); })
+                        .catch(function(){ resolve(null); });
+                });
+            });
+        }
+        if (cfg.mode === 'v2') {
+            var widget = form.querySelector('.g-recaptcha');
+            if (!widget) return Promise.resolve(null);
+            var resp = (typeof grecaptcha.getResponse === 'function') ? grecaptcha.getResponse() : '';
+            return Promise.resolve(resp || '');
+        }
+        return Promise.resolve(null);
+    }
+
+    // Form handler
+    function handleForm(formId, endpoint, msgEl) {
+        var form = document.getElementById(formId);
+        if (!form) return;
+        var msgBox = document.getElementById(msgEl);
+        form.addEventListener('submit', function(e){
+            e.preventDefault();
+            if (msgBox) msgBox.innerHTML = '<div class="alert" style="border-color:var(--outline);background:rgba(0,0,0,.03);">Sending...</div>';
+            getCaptchaToken(form).then(function(token){
+                var cfg = window.NIIB_RECAPTCHA;
+                if (cfg && cfg.mode === 'v2' && !token) {
+                    if (msgBox) msgBox.innerHTML = '<div class="alert alert-error">Please complete the reCAPTCHA challenge.</div>';
+                    return;
+                }
+                var fd = new FormData(form);
+                if (token) fd.set('g-recaptcha-response', token);
+                return fetch(endpoint, { method:'POST', body: fd })
+                    .then(function(r){ return r.json(); })
+                    .then(function(data){
+                        if (msgBox) msgBox.innerHTML = '<div class="alert alert-' + (data.ok ? 'success' : 'error') + '">' + (data.message || '') + '</div>';
+                        if (data.ok) {
+                            form.reset();
+                            if (cfg && cfg.mode === 'v2' && window.grecaptcha && typeof grecaptcha.reset === 'function') grecaptcha.reset();
+                        }
+                    })
+                    .catch(function(){
+                        if (msgBox) msgBox.innerHTML = '<div class="alert alert-error">Network error. Try again.</div>';
+                    });
+            });
+        });
+    }
+
+    var base = (window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, ''));
+    // Use SITE_URL derived from any internal link
+    var brandLink = document.querySelector('a.brand');
+    if (brandLink) base = brandLink.getAttribute('href').replace(/\/$/, '');
+
+    handleForm('contactForm', base + '/api/contact.php', 'contactMsg');
+    handleForm('enquiryForm', base + '/api/enquiry.php', 'enquiryMsg');
+    handleForm('newsletterForm', base + '/api/newsletter.php', 'newsletterMsg');
+    handleForm('leadForm', base + '/api/enquiry.php', 'leadMsg');
+    handleForm('franchiseForm', base + '/api/enquiry.php', 'franchiseMsg');
+
+})();

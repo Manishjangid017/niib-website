@@ -1,0 +1,2 @@
+# Backup files - excluded from version control (may contain large files)
+.backups/

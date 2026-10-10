@@ -1,0 +1,5 @@
+# Allow images & docs, block PHP execution
+<FilesMatch "\.(ph(p[3-9]?|tml|ar)|cgi|pl|py|sh)$">
+    Require all denied
+</FilesMatch>
+Options -ExecCGI
