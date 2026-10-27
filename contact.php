@@ -43,8 +43,8 @@ include 'includes/header.php';
 <div class="container">
     <div class="contact-grid" style="display:block;">
         <div class="contact-form">
-            <h3 style="font-family:var(--font-headline);font-size:var(--headline-md);color:var(--primary);">Send us a message</h3>
-            <form id="contactForm" style="margin-top:24px;">
+            <h2 style="font-family:var(--font-headline);font-size:var(--headline-md);color:var(--primary);">Send us a message</h2>
+            <!-- <form id="contactForm" style="margin-top:24px;">
                 <div class="form-row two">
                     <div><label>Name *</label><input name="name" required></div>
                     <div><label>Email *</label><input type="email" name="email" required></div>
@@ -62,7 +62,29 @@ include 'includes/header.php';
                 <?= niib_recaptcha_widget() ?>
                 <button class="btn btn-cta btn-lg">Send Message</button>
                 <div id="contactMsg"></div>
-            </form>
+            </form> -->
+            <div id="crm-form-container-56"></div>
+<script>
+(function() {
+    var cid = 'crm-form-container-56';
+    function load() {
+        var c = document.getElementById(cid);
+        if (!c || c.dataset.loaded) return;
+        c.dataset.loaded = '1';
+        var iframe = document.createElement('iframe');
+        iframe.id = 'crm-form-56';
+        iframe.src = 'https://crm.mediagarh.com/CRM/forms/public/56?embed=1&landing_url=' + encodeURIComponent(window.location.href);
+        iframe.width = '100%'; iframe.height = '440'; iframe.frameBorder = '0';
+        iframe.style.border = '0'; iframe.style.background = 'transparent';
+        c.appendChild(iframe);
+    }
+    if ('IntersectionObserver' in window) {
+        var el = document.getElementById(cid);
+        if (el) { var io = new IntersectionObserver(function(e){ if(e[0].isIntersecting){io.disconnect();load();} },{rootMargin:'300px'}); io.observe(el); }
+    } else { load(); }
+})();
+</script>
+
         </div>
     </div>
 

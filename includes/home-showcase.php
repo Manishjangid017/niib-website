@@ -81,8 +81,14 @@ $lb_groups = [];
 if ($sc_show('gallery') && !empty($sc['gallery']['images'])) $lb_groups['gallery'] = array_values(array_map(function($g){ return img_url($g); }, $sc['gallery']['images']));
 if ($sc_show('awards')  && !empty($award_images))            $lb_groups['awards']  = array_values(array_map(function($a){ return img_url($a); }, $award_images));
 ?>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<?php
+// Bodoni Moda is already loaded non-blocking from header.php — do NOT load it again.
+// Only load Material Symbols here (non-blocking).
+// Add preconnect for fonts.googleapis.com if not already emitted (it is in header.php,
+// but repeated preconnect is harmless; the browser deduplicates them).
+?>
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"></noscript>
 <?php include __DIR__ . '/loc-styles.php'; ?>
 
 <div id="loc-template" class="home-showcase">
@@ -100,7 +106,7 @@ if ($sc_show('awards')  && !empty($award_images))            $lb_groups['awards'
         <div class="lp-ach-card">
           <span class="material-symbols-outlined"><?= e($ac['icon']) ?></span>
           <?php if (!empty($ac['value'])): ?><span class="lp-ach-val"><?= e($ac['value']) ?></span><?php endif; ?>
-          <h4><?= e($ac['title']) ?></h4>
+          <h3><?= e($ac['title']) ?></h3>
           <p><?= e($ac['desc']) ?></p>
         </div>
         <?php endforeach; ?>
@@ -162,7 +168,7 @@ if ($sc_show('awards')  && !empty($award_images))            $lb_groups['awards'
         <?php foreach ($why_choose as $wc): ?>
         <div class="lp-why-card">
           <div class="lp-why-ico"><span class="material-symbols-outlined"><?= e($wc['icon']) ?></span></div>
-          <h4><?= e($wc['title']) ?></h4>
+          <h3><?= e($wc['title']) ?></h3>
           <p><?= e($wc['desc']) ?></p>
         </div>
         <?php endforeach; ?>

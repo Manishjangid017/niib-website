@@ -56,14 +56,14 @@ include 'includes/header.php';
 </section>
 
 <style>
-.blog-layout{display:grid;grid-template-columns:1fr;gap:48px;}
+.blog-layout{}
 @media(min-width:1024px){
     .blog-layout{grid-template-columns:minmax(0,1fr) 300px;gap:60px;align-items:start;}
 }
 .blog-layout .blog-main{min-width:0;}
 .blog-layout .blog-sidebar{position:sticky;top:100px;}
 .blog-layout .post-grid{display:grid;grid-template-columns:1fr;gap:24px;}
-@media(min-width:640px){.blog-layout .post-grid{grid-template-columns:repeat(2,1fr);}}
+@media(min-width:640px){.blog-layout .post-grid{grid-template-columns:repeat(3,1fr);}}
 .blog-layout .read-article{font-size:var(--label-lg);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--primary);border-bottom:1px solid var(--primary);padding-bottom:2px;display:inline-block;}
 .blog-layout .meta-info{color:var(--on-surface-variant);margin-bottom:32px;font-size:var(--label-lg);letter-spacing:0.1em;text-transform:uppercase;}
 .blog-layout .post-excerpt{color:var(--on-surface-variant);font-size:var(--body-md);margin-bottom:16px;}
@@ -75,7 +75,7 @@ include 'includes/header.php';
 <div class="blog-layout">
 
 <div class="blog-main" data-blog-results>
-    <p class="meta-info" data-blog-meta>Showing <?= count($posts) ?> of <?= $total ?> posts</p>
+    <h2 class="meta-info" data-blog-meta>Showing <?= count($posts) ?> of <?= $total ?> posts</h2>
 
     <div class="post-grid" data-blog-grid>
         <?php foreach ($posts as $bp): ?>
@@ -83,7 +83,7 @@ include 'includes/header.php';
             <a href="<?= SITE_URL ?>/blog/<?= e($bp['slug']) ?>"><img class="card-img" src="<?= e(img_url($bp['featured_image'])) ?>" alt="<?= e($bp['title']) ?>"></a>
             <div class="card-body">
                 <div class="blog-meta"><i class="bi bi-calendar3"></i> <?= fdate($bp['publish_date']) ?> &nbsp;·&nbsp; <?= e($bp['cat_name']) ?></div>
-                <h5><a href="<?= SITE_URL ?>/blog/<?= e($bp['slug']) ?>"><?= e($bp['title']) ?></a></h5>
+                <h2 style="font-size:28px"><a href="<?= SITE_URL ?>/blog/<?= e($bp['slug']) ?>"><?= e($bp['title']) ?></a></h2>
                 <p class="post-excerpt"><?= e(excerpt($bp['short_description'],18)) ?></p>
                 <a href="<?= SITE_URL ?>/blog/<?= e($bp['slug']) ?>" class="read-article">Read Article →</a>
             </div>
@@ -98,21 +98,21 @@ include 'includes/header.php';
         <?php $base = SITE_URL.'/blog.php?'.http_build_query(array_filter(['cat'=>$catSlug,'q'=>$q])); echo paginate($total,$perPage,$page,$base); ?>
     </div>
 </div>
-
+<!-- 
 <aside class="blog-sidebar">
     <form class="search-box" data-blog-form onsubmit="event.preventDefault();">
         <input class="form-control" type="search" name="q" placeholder="Search posts..." value="<?= e($q) ?>" autocomplete="off" data-blog-input>
         <button type="submit" aria-label="Search"><i class="bi bi-search"></i></button>
         <span class="search-spinner" data-blog-spinner aria-hidden="true"><i class="bi bi-arrow-repeat"></i></span>
     </form>
-    <h4 class="sidebar-title">Categories</h4>
+    <h3 class="sidebar-title">Categories</h3>
     <ul class="sidebar-list" data-blog-cats>
         <li><a href="#" data-cat="" class="<?= $catSlug===''?'active':'' ?>">All Posts</a></li>
         <?php foreach ($categories as $c): ?>
             <li><a href="#" data-cat="<?= e($c['slug']) ?>" class="<?= $catSlug===$c['slug']?'active':'' ?>"><?= e($c['name']) ?></a></li>
         <?php endforeach; ?>
     </ul>
-</aside>
+</aside> -->
 
 </div>
 </div>

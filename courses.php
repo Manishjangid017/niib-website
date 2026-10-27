@@ -81,6 +81,10 @@ include 'includes/header.php';
 .courses-layout .sidebar-title{font-family:var(--font-headline);font-size:var(--headline-sm);margin-bottom:16px;color:var(--primary);font-weight:500;}
 /* Force 2-column course grid inside courses page (override global 3-col rule) */
 .courses-layout .course-list-grid{grid-template-columns:1fr;}
+
+.course-list-grid .card-body h2 {
+    font-size: 28px;
+}
 @media(min-width:640px){
     .courses-layout .course-list-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
 }
@@ -99,7 +103,7 @@ include 'includes/header.php';
                 <button type="submit"><i class="bi bi-search"></i></button>
             </form>
 
-            <h4 class="sidebar-title">Categories</h4>
+            <h3 class="sidebar-title">Categories</h3>
             <ul class="sidebar-list">
                 <li><a href="<?= SITE_URL ?>/courses" class="<?= $catSlug===''?'active':'' ?>">All Courses</a></li>
                 <?php foreach ($categories as $c): ?>
@@ -117,7 +121,7 @@ include 'includes/header.php';
                     <img class="card-img" src="<?= e(img_url($c['image'])) ?>" alt="<?= e($c['title']) ?>">
                     <div class="card-body">
                         <?php if($c['cat_name']): ?><span class="cat"><?= e($c['cat_name']) ?></span><?php endif; ?>
-                        <h5><a href="<?= SITE_URL ?>/course/<?= e($c['slug']) ?>"><?= e($c['title']) ?></a></h5>
+                        <h2><a href="<?= SITE_URL ?>/course/<?= e($c['slug']) ?>"><?= e($c['title']) ?></a></h2>
                         <p class="card-desc"><?= e(excerpt($c['short_description'],16)) ?></p>
                         <div class="meta">
                             <span><i class="bi bi-clock"></i> <?= e($c['duration']) ?></span>

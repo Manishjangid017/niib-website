@@ -154,7 +154,7 @@ include 'includes/header.php';
             <h2>Our Comprehensive Support Ecosystem</h2>
             <p>We don't just grant a license; we build a partnership. From the moment you sign, we are with you at every step.</p>
             <div class="fr-cta-box">
-                <h4>Ready to Start?</h4>
+                <h3>Ready to Start?</h3>
                 <p>Talk to our expansion head today.</p>
                 <a href="tel:<?= e(preg_replace('/[^0-9+]/','',$franchisePhone)) ?>" class="fr-cta-box-link">Connect Now <i class="bi bi-arrow-right"></i></a>
             </div>
@@ -162,22 +162,22 @@ include 'includes/header.php';
         <div class="fr-support-cards">
             <div class="fr-support-card">
                 <i class="bi bi-geo-alt-fill"></i>
-                <h5>Site Selection</h5>
+                <h4>Site Selection</h4>
                 <p>Strategic assistance in identifying high-traffic locations for maximum visibility.</p>
             </div>
             <div class="fr-support-card">
                 <i class="bi bi-rulers"></i>
-                <h5>Interior Design</h5>
+                <h4>Interior Design</h4>
                 <p>Complete guidance on infrastructure setup to match the NIIB premium clinical aesthetic.</p>
             </div>
             <div class="fr-support-card">
                 <i class="bi bi-person-plus-fill"></i>
-                <h5>Staff Recruitment</h5>
+                <h4>Staff Recruitment</h4>
                 <p>Professional hiring and intensive training for your academic and sales teams.</p>
             </div>
             <div class="fr-support-card">
                 <i class="bi bi-megaphone-fill"></i>
-                <h5>Marketing Support</h5>
+                <h4>Marketing Support</h4>
                 <p>Pre-launch buzz creation and sustained digital marketing support for lead generation.</p>
             </div>
         </div>
@@ -276,27 +276,27 @@ include 'includes/header.php';
         <div class="fr-steps-grid">
             <div class="fr-step">
                 <div class="fr-step-circle">01</div>
-                <h4>Enquiry</h4>
+                <h3 style="font-size:22px;">Enquiry</h3>
                 <p>Connect with our franchise team online.</p>
             </div>
             <div class="fr-step">
                 <div class="fr-step-circle">02</div>
-                <h4>Application</h4>
+                <h3 style="font-size:22px;">Application</h3>
                 <p>Share your business profile and location details.</p>
             </div>
             <div class="fr-step">
                 <div class="fr-step-circle">03</div>
-                <h4>Approval</h4>
+                <h3 style="font-size:22px;">Approval</h3>
                 <p>Direct discussion with management &amp; site visit.</p>
             </div>
             <div class="fr-step">
                 <div class="fr-step-circle">04</div>
-                <h4>Setup</h4>
+                <h3 style="font-size:22px;">Setup</h3>
                 <p>Staff training and interior transformation.</p>
             </div>
             <div class="fr-step">
                 <div class="fr-step-circle fr-step-active">05</div>
-                <h4>Launch</h4>
+                <h3 style="font-size:22px;">Launch</h3>
                 <p>Grand opening with full marketing support.</p>
             </div>
         </div>
@@ -330,8 +330,8 @@ include 'includes/header.php';
         </div>
 
         <div class="fr-form-card">
-            <h3>Franchise Inquiry</h3>
-            <form id="franchiseForm">
+            <p style="font-size:32px; font-weight:600; text-align:center;">Franchise Inquiry</p>
+            <!-- <form id="franchiseForm">
                 <input type="hidden" name="source" value="franchise">
                 <input type="hidden" name="course_name" value="Franchise Enquiry">
                 <div class="fr-form-row two">
@@ -363,7 +363,30 @@ include 'includes/header.php';
                 <?= niib_recaptcha_widget() ?>
                 <button type="submit" class="btn btn-cta btn-lg fr-form-submit">Request Call Back</button>
                 <div id="franchiseMsg"></div>
-            </form>
+            </form> -->
+
+            <div id="crm-form-container-57"></div>
+<script>
+(function() {
+    var cid = 'crm-form-container-57';
+    function load() {
+        var c = document.getElementById(cid);
+        if (!c || c.dataset.loaded) return;
+        c.dataset.loaded = '1';
+        var iframe = document.createElement('iframe');
+        iframe.id = 'crm-form-57';
+        iframe.src = 'https://crm.mediagarh.com/CRM/forms/public/57?embed=1&landing_url=' + encodeURIComponent(window.location.href);
+        iframe.width = '100%'; iframe.height = '550'; iframe.frameBorder = '0';
+        iframe.style.border = '0'; iframe.style.background = 'transparent';
+        c.appendChild(iframe);
+    }
+    if ('IntersectionObserver' in window) {
+        var el = document.getElementById(cid);
+        if (el) { var io = new IntersectionObserver(function(e){ if(e[0].isIntersecting){io.disconnect();load();} },{rootMargin:'300px'}); io.observe(el); }
+    } else { load(); }
+})();
+</script>
+
         </div>
     </div>
 </div>

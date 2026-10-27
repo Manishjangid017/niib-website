@@ -45,7 +45,7 @@ function lp_meta_strip(array $items): string {
 function lp_section(string $eyebrow, string $title, string $body): string {
     return '<section style="margin:48px 0">'
         . '<span style="display:inline-block;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#fe5e1e;margin-bottom:10px">' . htmlspecialchars($eyebrow) . '</span>'
-        . '<h2 style="font-family:\'Bodoni Moda\',Georgia,serif;font-size:clamp(26px,3.4vw,36px);margin:0 0 16px;color:#170338">' . htmlspecialchars($title) . '</h2>'
+        . '<h3 style="font-family:\'Bodoni Moda\',Georgia,serif;font-size:clamp(26px,3.4vw,36px);margin:0 0 16px;color:#170338">' . htmlspecialchars($title) . '</h3>'
         . $body
         . '</section>';
 }
@@ -53,7 +53,7 @@ function lp_highlights(array $items): string {
     $html = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:16px">';
     foreach ($items as $title => $desc) {
         $html .= '<div style="padding:18px;background:#fcf9f8;border-left:4px solid #fe5e1e;border-radius:0 8px 8px 0">'
-              .  '<strong style="display:block;font-size:15px;color:#170338;margin-bottom:6px">' . htmlspecialchars($title) . '</strong>'
+              .  '<h4 style="display:block;font-family:inherit;font-weight:700;font-size:15px;color:#170338;margin:0 0 6px">' . htmlspecialchars($title) . '</h4>'
               .  '<span style="font-size:14px;color:#49454e;line-height:1.55">' . htmlspecialchars($desc) . '</span>'
               .  '</div>';
     }
@@ -90,7 +90,7 @@ function lp_steps(array $steps): string {
     foreach ($steps as $title => $desc) {
         $html .= '<div style="padding:18px;background:linear-gradient(135deg,#170338,#2d1b4e);color:#fff;border-radius:10px;position:relative">'
               .  '<span style="position:absolute;top:12px;right:14px;font-family:\'Bodoni Moda\',serif;font-size:36px;font-weight:700;color:rgba(255,255,255,.18)">' . $n++ . '</span>'
-              .  '<strong style="display:block;font-size:14px;margin-bottom:6px;color:#ffdbcf;letter-spacing:.06em;text-transform:uppercase">' . htmlspecialchars($title) . '</strong>'
+              .  '<h4 style="display:block;font-family:inherit;font-weight:700;font-size:14px;margin:0 0 6px;color:#ffdbcf;letter-spacing:.06em;text-transform:uppercase">' . htmlspecialchars($title) . '</h4>'
               .  '<span style="font-size:14px;opacity:.9;line-height:1.5">' . htmlspecialchars($desc) . '</span>'
               .  '</div>';
     }
@@ -111,7 +111,7 @@ function lp_faqs(array $faqs): string {
 }
 function lp_cta(string $title, array $bullets, string $closing): string {
     $html = '<section style="margin:48px 0 16px;padding:40px;background:linear-gradient(135deg,#170338,#2d1b4e);color:#fff;border-radius:14px;text-align:center">'
-        . '<h2 style="font-family:\'Bodoni Moda\',Georgia,serif;font-size:clamp(26px,3.4vw,38px);margin:0 0 18px;color:#fff">' . htmlspecialchars($title) . '</h2>'
+        . '<h3 style="font-family:\'Bodoni Moda\',Georgia,serif;font-size:clamp(26px,3.4vw,38px);margin:0 0 18px;color:#fff">' . htmlspecialchars($title) . '</h3>'
         . '<ul style="list-style:none;padding:0;margin:0 auto 22px;max-width:520px;display:flex;flex-direction:column;gap:8px">';
     foreach ($bullets as $b) {
         $html .= '<li style="display:flex;align-items:center;justify-content:center;gap:10px;color:#ffdbcf;font-size:15px;font-weight:600">'

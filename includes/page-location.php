@@ -112,10 +112,9 @@ $video_testimonials = [
 ];
 ?>
 
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-
-
+<?php /* Bodoni Moda already loads non-blocking from header.php — no duplicate needed here. */?>
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"></noscript>
 
 <?php include __DIR__ . '/loc-styles.php'; ?>
 
@@ -142,33 +141,33 @@ $video_testimonials = [
         </div>
         <?php
           $heroCity = $td['contact']['cities'][0] ?? '';
-          $heroLocs = [];
-          try { foreach (db()->query("SELECT city, state FROM locations WHERE status=1 ORDER BY state, city") as $hl) { $heroLocs[$hl['state'] ?: 'Other'][] = $hl['city']; } } catch (Throwable $e) {}
         ?>
         <div class="lp-hero-formwrap">
-          <form id="locHeroForm" class="lp-hero-form">
-            <h3 class="lp-hero-form-title">Book a Free Consultation</h3>
+          <div class="lp-hero-form">
+            <p class="lp-hero-form-title">Book a Free Consultation</p>
             <p class="lp-hero-form-sub">Share your details and our counsellor will call you back.</p>
-            <input type="hidden" name="source" value="Location Hero - <?= e($heroCity ?: $p['title']) ?>">
-            <div class="lp-hf-field"><label for="lhf-name">Name *</label><input id="lhf-name" name="name" required placeholder="Your name"></div>
-            <div class="lp-hf-field"><label for="lhf-phone">Phone *</label><input id="lhf-phone" name="phone" type="tel" required placeholder="+91"></div>
-            <div class="lp-hf-field"><label for="lhf-email">Email *</label><input id="lhf-email" name="email" type="email" required placeholder="example@email.com"></div>
-            <div class="lp-hf-field"><label for="lhf-city">Location</label>
-              <select id="lhf-city" name="city">
-                <option value="">Select your nearest location</option>
-                <?php foreach ($heroLocs as $st => $cts): ?>
-                  <optgroup label="<?= e($st) ?>">
-                    <?php foreach ($cts as $ct): ?>
-                      <option value="<?= e($ct) ?>"<?= ($ct === $heroCity ? ' selected' : '') ?>><?= e($ct) ?></option>
-                    <?php endforeach; ?>
-                  </optgroup>
-                <?php endforeach; ?>
-              </select>
-            </div>
-            <?= niib_recaptcha_widget() ?>
-            <button type="submit" class="lp-hf-submit">Request a Call Back</button>
-            <div id="locHeroMsg" class="lp-hf-msg"></div>
-          </form>
+              <div id="crm-form-container-50"></div>
+              <script>
+              (function() {
+                  var cid = 'crm-form-container-50';
+                  function load() {
+                      var c = document.getElementById(cid);
+                      if (!c || c.dataset.loaded) return;
+                      c.dataset.loaded = '1';
+                      var iframe = document.createElement('iframe');
+                      iframe.id = 'crm-form-50';
+                      iframe.src = 'https://crm.mediagarh.com/CRM/forms/public/50?embed=1&landing_url=' + encodeURIComponent(window.location.href);
+                      iframe.width = '100%'; iframe.height = '420'; iframe.frameBorder = '0';
+                      iframe.style.border = '0'; iframe.style.background = 'transparent';
+                      c.appendChild(iframe);
+                  }
+                  if ('IntersectionObserver' in window) {
+                      var el = document.getElementById(cid);
+                      if (el) { var io = new IntersectionObserver(function(e){ if(e[0].isIntersecting){io.disconnect();load();} },{rootMargin:'400px'}); io.observe(el); }
+                  } else { load(); }
+              })();
+              </script>
+          </div>
         </div>
       </div>
     </div>
@@ -307,7 +306,7 @@ $video_testimonials = [
         <?php foreach ($career_paths as $cp): ?>
         <div class="lp-career2-card">
           <span class="material-symbols-outlined"><?= e($cp['icon']) ?></span>
-          <h4><?= e($cp['title']) ?></h4>
+          <h3><?= e($cp['title']) ?></h3>
           <p><?= e($cp['desc']) ?></p>
         </div>
         <?php endforeach; ?>
@@ -327,7 +326,7 @@ $video_testimonials = [
         <div class="lp-ach-card">
           <span class="material-symbols-outlined"><?= e($ac['icon']) ?></span>
           <?php if (!empty($ac['value'])): ?><span class="lp-ach-val"><?= e($ac['value']) ?></span><?php endif; ?>
-          <h4><?= e($ac['title']) ?></h4>
+          <h3><?= e($ac['title']) ?></h3>
           <p><?= e($ac['desc']) ?></p>
         </div>
         <?php endforeach; ?>
@@ -362,7 +361,7 @@ $video_testimonials = [
         <?php foreach ($why_choose as $wc): ?>
         <div class="lp-why-card">
           <div class="lp-why-ico"><span class="material-symbols-outlined"><?= e($wc['icon']) ?></span></div>
-          <h4><?= e($wc['title']) ?></h4>
+          <h3><?= e($wc['title']) ?></h3>
           <p><?= e($wc['desc']) ?></p>
         </div>
         <?php endforeach; ?>
@@ -545,7 +544,7 @@ $video_testimonials = [
   ?>
   <section class="lp-accred">
     <div class="lp-container">
-      <span class="lp-accred-label">Globally Recognized Accreditations</span>
+      <h2 class="lp-accred-label">Globally Recognized Accreditations</h2>
       <div class="lp-accred-list">
         <?php foreach ($cleanAccreditations as $a): ?>
           <?php if (!empty($a['logo'])): ?>
@@ -660,7 +659,6 @@ $video_testimonials = [
       });
     });
   }
-  setupAjaxForm('locHeroForm', 'locHeroMsg');
   setupAjaxForm('locLeadForm', 'locLeadMsg');
 
   /* ----- Course carousel ----- */

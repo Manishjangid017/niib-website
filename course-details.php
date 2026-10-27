@@ -89,8 +89,8 @@ include 'includes/header.php';
 /* Section eyebrows are smaller spans — pull them tight to the heading */
 .course-details-page .detail-content section > span:first-child { margin-bottom: 4px !important; }
 
-/* Imported H2: align with the page's serif headline + tight bottom margin */
-.course-details-page .detail-content section h2 {
+/* Imported H3: align with the page's serif headline + tight bottom margin */
+.course-details-page .detail-content section h3 {
     font-family: var(--font-headline, 'Bodoni Moda', Georgia, serif) !important;
     font-size: clamp(22px, 2.4vw, 30px) !important;
     margin: 0 0 10px !important;
@@ -179,7 +179,7 @@ include 'includes/header.php';
     <div class="detail-content">
         <span class="section-eyebrow">Curriculum Overview</span>
         <h2 style="font-size:clamp(28px,3vw,40px);margin:8px 0 24px;">Transforming Passion Into Professional Mastery.</h2>
-        <?= $c['full_description'] ?>
+        <?= str_replace(['<h2', '</h2>'], ['<h3', '</h3>'], $c['full_description']) ?>
 
         <?php if ($c['eligibility']): ?>
         <h3 style="margin-top:48px;">Eligibility</h3>
@@ -189,7 +189,7 @@ include 'includes/header.php';
         <?php if ($related): ?>
         <div class="related-carousel" data-carousel>
             <div class="related-head">
-                <h3>Related Programs</h3>
+                <h2>Related Programs</h2>
                 <div class="related-controls">
                     <button type="button" class="related-arrow" data-dir="prev" aria-label="Previous"><i class="bi bi-chevron-left"></i></button>
                     <button type="button" class="related-arrow" data-dir="next" aria-label="Next"><i class="bi bi-chevron-right"></i></button>
@@ -203,7 +203,7 @@ include 'includes/header.php';
                     </a>
                     <div class="related-body">
                         <span class="related-cat"><?= e($r['level']) ?: 'Program' ?></span>
-                        <h5><a href="<?= SITE_URL ?>/course/<?= e($r['slug']) ?>"><?= e($r['title']) ?></a></h5>
+                        <h3><a href="<?= SITE_URL ?>/course/<?= e($r['slug']) ?>"><?= e($r['title']) ?></a></h3>
                         <p class="related-excerpt"><?= e(excerpt($r['short_description'], 14)) ?></p>
                         <div class="related-foot">
                             <div class="related-price">
@@ -236,8 +236,8 @@ include 'includes/header.php';
             </ul>
 
             <div id="enquire" style="margin-top:24px;padding-top:24px;border-top:1px solid var(--outline-variant);">
-                <h4 style="font-family:var(--font-headline);font-size:var(--headline-sm);color:var(--primary);">Have Questions? Get in touch!</h4>
-                <form id="enquiryForm" style="margin-top:16px;">
+                <p style="font-family:var(--font-headline);font-size:var(--headline-sm);color:var(--primary);">Have Questions? Get in touch!</p>
+                <!-- <form id="enquiryForm" style="margin-top:16px;">
                     <input type="hidden" name="course_id" value="<?= (int)$c['id'] ?>">
                     <input type="hidden" name="course_name" value="<?= e($c['title']) ?>">
                     <div class="form-group" style="margin-bottom:12px;"><input class="form-control" name="name" placeholder="Your Name" required style="padding:12px;border:1px solid var(--outline-variant);background:#fff;font-family:inherit;width:100%;"></div>
@@ -248,7 +248,30 @@ include 'includes/header.php';
                     <?= niib_recaptcha_widget() ?>
                     <button class="btn btn-cta" style="width:100%;">Submit Enquiry</button>
                     <div id="enquiryMsg" style="margin-top:10px;font-size:14px;"></div>
-                </form>
+                </form> -->
+
+                <div id="crm-form-container-56"></div>
+<script>
+(function() {
+    var cid = 'crm-form-container-56';
+    function load() {
+        var c = document.getElementById(cid);
+        if (!c || c.dataset.loaded) return;
+        c.dataset.loaded = '1';
+        var iframe = document.createElement('iframe');
+        iframe.id = 'crm-form-56';
+        iframe.src = 'https://crm.mediagarh.com/CRM/forms/public/56?embed=1&landing_url=' + encodeURIComponent(window.location.href);
+        iframe.width = '100%'; iframe.height = '560'; iframe.frameBorder = '0';
+        iframe.style.border = '0'; iframe.style.background = 'transparent';
+        c.appendChild(iframe);
+    }
+    if ('IntersectionObserver' in window) {
+        var el = document.getElementById(cid);
+        if (el) { var io = new IntersectionObserver(function(e){ if(e[0].isIntersecting){io.disconnect();load();} },{rootMargin:'300px'}); io.observe(el); }
+    } else { load(); }
+})();
+</script>
+
             </div>
         </div>
     </aside>

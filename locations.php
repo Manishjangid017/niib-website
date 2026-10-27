@@ -117,17 +117,17 @@ include 'includes/header.php';
         } elseif (!empty($loc['custom_link'])) {
             $hubHref = e($loc['custom_link']);
             $hubExtra = ' target="_blank" rel="noopener"';
-            $hubLabel = 'VIEW HUB';
+            $hubLabel = 'VIEW CAMPUS';
         } else {
             $hubHref = SITE_URL . '/contact?city=' . urlencode($loc['city']);
             $hubExtra = '';
-            $hubLabel = 'VIEW HUB';
+            $hubLabel = 'VIEW CAMPUS';
         }
         ?>
         <article class="loc-card loc-card-featured">
             <span class="loc-label"><?= e($loc['region_label']) ?></span>
             <div class="loc-name-row" style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px">
-                <h4 style="margin:0"><?= e($loc['city']) ?></h4>
+                <h3 style="margin:0"><?= e($loc['city']) ?></h3>
                
             </div>
             <div class="loc-meta">
@@ -315,11 +315,13 @@ include 'includes/header.php';
 <section class="dark-section loc-network">
 <div class="container">
     <div class="split-grid">
-        <div>
-            <h2 style="color:#fff;">A Growing Network of Mastery</h2>
-            <p style="color:rgba(255,255,255,.78);font-size:var(--body-lg);max-width:520px;">
-                Our presence across Northern and Eastern India ensures that aspiring professionals have access to specialized aesthetic modules and global certifications like CIDESCO.
-            </p>
+            <div class="col-lg-6 col-12">
+                <h2 style="color:#fff;">A Growing Network of Mastery</h2>
+                <p style="color:rgba(255,255,255,.78);font-size:var(--body-lg);max-width:520px;">
+                    Our presence across Northern and Eastern India ensures that aspiring professionals have access to specialized aesthetic modules and global certifications like CIDESCO.
+                </p>
+            </div>
+            <div class="col-lg-6 col-12">
             <div class="stat-grid" style="margin-top:32px;max-width:520px;">
                 <div class="stat">
                     <span class="num" style="color:var(--secondary-container);"><?= max(35, $totalCenters) ?>+</span>
@@ -329,31 +331,8 @@ include 'includes/header.php';
                     <span class="num" style="color:var(--secondary-container);">15K+</span>
                     <span class="label">Global Careers</span>
                 </div>
-            </div>
         </div>
-
-        <div class="loc-request-card">
-            <h3>Request Center Details</h3>
-            <p>Looking for specific center information or admission dates in your city?</p>
-            <form id="enquiryForm">
-                <input type="hidden" name="course_name" value="Location Enquiry">
-                <div class="form-group">
-                    <input type="text" name="name" placeholder="Your Name" required>
-                </div>
-                <div class="form-group">
-                    <input type="email" name="email" placeholder="Your Email" required>
-                </div>
-                <div class="form-group">
-                    <input type="tel" name="phone" placeholder="Your Phone Number" required>
-                </div>
-                <div class="form-group">
-                    <input type="text" name="city" placeholder="Your City" required>
-                </div>
-                <?= niib_recaptcha_widget() ?>
-                <button type="submit" class="btn btn-cta" style="width:100%;">Request Info</button>
-                <div id="enquiryMsg" style="margin-top:10px;font-size:14px;"></div>
-            </form>
-        </div>
+    </div>
     </div>
 </div>
 </section>
@@ -366,7 +345,7 @@ include 'includes/header.php';
         <p style="color:var(--on-surface-variant);font-size:var(--body-lg);">Connect with our regional admission experts to begin your transformation journey.</p>
     </div>
     <div class="loc-lead-card">
-        <form id="contactForm">
+        <!-- <form id="contactForm">
             <div class="lead-grid">
                 <div class="lead-field"><i class="bi bi-person-fill"></i><input type="text" name="name" placeholder="Name" required></div>
                 <div class="lead-field"><i class="bi bi-envelope-fill"></i><input type="email" name="email" placeholder="Email Address" required></div>
@@ -385,7 +364,28 @@ include 'includes/header.php';
             <?= niib_recaptcha_widget() ?>
             <button type="submit" class="btn btn-cta btn-lg" style="margin-top:24px;">Submit Inquiry</button>
             <div id="contactMsg" style="margin-top:16px;"></div>
-        </form>
+        </form> -->
+          <div id="crm-form-container-56"></div>
+<script>
+(function() {
+    var cid = 'crm-form-container-56';
+    function load() {
+        var c = document.getElementById(cid);
+        if (!c || c.dataset.loaded) return;
+        c.dataset.loaded = '1';
+        var iframe = document.createElement('iframe');
+        iframe.id = 'crm-form-56';
+        iframe.src = 'https://crm.mediagarh.com/CRM/forms/public/56?embed=1&landing_url=' + encodeURIComponent(window.location.href);
+        iframe.width = '100%'; iframe.height = '440'; iframe.frameBorder = '0';
+        iframe.style.border = '0'; iframe.style.background = 'transparent';
+        c.appendChild(iframe);
+    }
+    if ('IntersectionObserver' in window) {
+        var el = document.getElementById(cid);
+        if (el) { var io = new IntersectionObserver(function(e){ if(e[0].isIntersecting){io.disconnect();load();} },{rootMargin:'300px'}); io.observe(el); }
+    } else { load(); }
+})();
+</script>
     </div>
 </div>
 </section>

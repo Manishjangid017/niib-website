@@ -35,14 +35,22 @@ RewriteRule ^(.*)$ https://newimageinstitute.com/$1 [R=301,L,NE]
 # RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
 # RewriteRule ^(.*)$ https://%1/$1 [L,R=301,NE]
 
-# Protect sensitive directories
+# Protect sensitive directories (landing-pages is intentionally excluded —
+# it is served internally via rewrite; direct URL access is blocked below).
 RewriteRule ^(config|includes|database)/?(.*)$ - [F,L]
+
+# Block direct URL access to landing-pages/ folder.
+# Only fires when the browser directly requests /landing-pages/... (external).
+# Internal rewrites (from the clean-URL rule) are NOT flagged as external,
+# so they pass through fine.
+RewriteCond %{THE_REQUEST} \s/landing-pages/ [NC]
+RewriteRule ^ - [F,L]
 
 # Remove .php extension from public scripts.
 # /about.php → /about (canonical). %1 is captured from THE_REQUEST which
 # includes the full request path with leading slash — works in any base.
 RewriteCond %{THE_REQUEST} \s([^?\s]+?)\.php[\s?] [NC]
-RewriteCond %{REQUEST_URI} !/(admin|api|database|includes|config)/
+RewriteCond %{REQUEST_URI} !/(admin|api|database|includes|config|landing-pages)/
 RewriteRule ^ %1 [R=301,L,NE]
 
 # Remove trailing slash for non-directories (consistency).
@@ -86,10 +94,46 @@ RewriteRule ^locations/?$ locations.php [L,QSA]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^franchise/?$ franchise.php [L,QSA]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^thank-you/?$ thank-you.php [L,QSA]
 
 # Sitemap & robots
 RewriteRule ^sitemap\.xml$ sitemap.php [L]
 RewriteRule ^robots\.txt$ robots.php [L]
+
+# =====================================================
+# Landing pages — served from landing-pages/ folder
+# but accessed via clean root-level URLs (no folder in URL).
+# Add one RewriteRule per landing page here.
+# =====================================================
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^admission-open-2026-27/?$ landing-pages/admission-open-2026-27.php [L,QSA]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^jalandhar-admission-2026/?$ landing-pages/jalandhar-admission-2026.php [L,QSA]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ludhiana-admission-2026/?$ landing-pages/ludhiana-admission-2026.php [L,QSA]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^amritsar-admission-2026/?$ landing-pages/amritsar-admission-2026.php [L,QSA]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^phagwara-admission-2026/?$ landing-pages/phagwara-admission-2026.php [L,QSA]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^chandigarh-admission-2026/?$ landing-pages/chandigarh-admission-2026.php [L,QSA]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^hoshiarpur-admission-2026/?$ landing-pages/hoshiarpur-admission-2026.php [L,QSA]
 
 # Dynamic page catch-all (SEO-friendly /{slug}).
 # Place LAST so all hardcoded routes (and existing files/dirs) win first.

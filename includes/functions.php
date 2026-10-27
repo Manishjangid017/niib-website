@@ -396,8 +396,16 @@ function niib_optimize_images_html(string $html): string {
     return preg_replace_callback('/<img\b([^>]*)>/i', function ($m) {
         $attrs = $m[1];
 
-        // Skip <img> in the topbar/header (above the fold)
+        // Skip images that are explicitly marked as above-the-fold / eager
+        // (hero, logo brand, background images, or already has fetchpriority/loading)
         if (preg_match('/\bclass="[^"]*\b(brand|hero-bg|fr-hero-bg|loc-hero-bg)\b/i', $attrs)) {
+            return $m[0];
+        }
+        // Skip if already has fetchpriority="high" or loading="eager" (LCP images)
+        if (preg_match('/\bfetchpriority\s*=\s*["\']?high/i', $attrs)) {
+            return $m[0];
+        }
+        if (preg_match('/\bloading\s*=\s*["\']?eager/i', $attrs)) {
             return $m[0];
         }
 

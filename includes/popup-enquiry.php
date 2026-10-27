@@ -26,7 +26,7 @@ try {
 $peFranchise = !empty($popup_franchise_form);
 ?>
 <style>
-#enquiryPopup .pe-popup{ max-width:420px; padding:28px 26px 24px; }
+#enquiryPopup .pe-popup{ max-width:520px; padding:28px 26px 24px; }
 #enquiryPopup .pe-popup h4{ margin-bottom:4px; }
 #enquiryPopup .pe-sub{ color:var(--on-surface-variant); font-size:14px; margin-bottom:18px; }
 #enquiryPopup .pe-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
@@ -52,55 +52,32 @@ $peFranchise = !empty($popup_franchise_form);
     <h4 id="peTitle"><?= e($peFranchise ? 'Franchise Inquiry' : setting('popup_form_title', 'Book a Free Consultation')) ?></h4>
     <p class="pe-sub"><?= e($peFranchise ? 'Share your details and our franchise team will call you back.' : setting('popup_form_subtitle', 'Share your details and our counsellor will call you back.')) ?></p>
 
-    <form id="popupEnquiryForm">
-      <input type="hidden" name="source" value="<?= $peFranchise ? 'Franchise Popup' : 'Website Popup' ?>">
-      <?php if ($peFranchise): ?><input type="hidden" name="course_name" value="Franchise Enquiry"><?php endif; ?>
-      <div class="pe-grid">
-        <div class="pe-field">
-          <label for="pe-name">Name *</label>
-          <input id="pe-name" name="name" required placeholder="Your name">
-        </div>
-        <div class="pe-field">
-          <label for="pe-phone">Phone *</label>
-          <input id="pe-phone" name="phone" type="tel" required placeholder="+91">
-        </div>
-        <div class="pe-field pe-full">
-          <label for="pe-email">Email *</label>
-          <input id="pe-email" name="email" type="email" required placeholder="example@email.com">
-        </div>
-        <?php if ($peFranchise): ?>
-        <div class="pe-field pe-full">
-          <label for="pe-city">City of Interest</label>
-          <input id="pe-city" name="city" type="text" placeholder="Which city are you looking at?">
-        </div>
-        <div class="pe-field pe-full">
-          <label for="pe-invest">Investment Range</label>
-          <select id="pe-invest" name="message">
-            <option value="₹30 - ₹40 Lakhs">₹30 - ₹40 Lakhs</option>
-            <option value="₹40 - ₹50 Lakhs">₹40 - ₹50 Lakhs</option>
-            <option value="Above ₹50 Lakhs">Above ₹50 Lakhs</option>
-          </select>
-        </div>
-        <?php else: ?>
-        <div class="pe-field pe-full">
-          <label for="pe-location">Location</label>
-          <select id="pe-location" name="city">
-            <option value="">Select your nearest location</option>
-            <?php foreach ($peLocs as $state => $cities): ?>
-              <optgroup label="<?= e($state) ?>">
-                <?php foreach ($cities as $city): ?>
-                  <option value="<?= e($city) ?>"><?= e($city) ?></option>
-                <?php endforeach; ?>
-              </optgroup>
-            <?php endforeach; ?>
-          </select>
-        </div>
-        <?php endif; ?>
-      </div>
-      <?= niib_recaptcha_widget() ?>
-      <button type="submit" class="btn btn-cta"><?= $peFranchise ? 'Request Call Back' : 'Request a Call Back' ?></button>
-      <div id="popupEnquiryMsg"></div>
-    </form>
+    <div id="crm-form-container-popup-56"></div>
+    <script>
+    // CRM iframe is loaded lazily — injected only when this popup becomes visible.
+    // This avoids a cross-origin HTTP request on every page load for a popup that
+    // most users never open.
+    window._niibLoadCrmPopup = function() {
+        var container = document.getElementById('crm-form-container-popup-56');
+        if (!container || container.dataset.loaded) return;
+        container.dataset.loaded = '1';
+        var baseUrl = 'https://crm.mediagarh.com/CRM/forms/public/56';
+        var currentUrl = window.location.href;
+        var iframeSrc = baseUrl + '?embed=1&landing_url=' + encodeURIComponent(currentUrl);
+        var iframe = document.createElement('iframe');
+        iframe.id = 'crm-form-popup-56';
+        iframe.src = iframeSrc;
+        iframe.width = '100%';
+        iframe.height = '570';
+        iframe.frameBorder = '0';
+        iframe.style.border = '0';
+        iframe.style.background = 'transparent';
+        iframe.title = 'Enquiry Form';
+        container.appendChild(iframe);
+    };
+    </script>
+    
+
   </div>
 </div>
 
@@ -130,7 +107,7 @@ try {
   var promoWillShow = PROMO.active && !(PROMO.once && localStorage.getItem('niib_popup_seen'));
   if (promoWillShow) DELAY = Math.max(DELAY, PROMO.delay + 800);
 
-  function open(){ overlay.classList.add('active'); document.body.style.overflow = 'hidden'; }
+  function open(){ overlay.classList.add('active'); document.body.style.overflow = 'hidden'; if(window._niibLoadCrmPopup) window._niibLoadCrmPopup(); }
   function close(){ overlay.classList.remove('active'); document.body.style.overflow = ''; try { localStorage.setItem('niib_popup_dismissed', String(Date.now())); } catch(e){} }
 
   // Don't stack two overlays — wait for any other open popup to be dismissed.

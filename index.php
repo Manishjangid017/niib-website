@@ -40,10 +40,11 @@ include 'includes/header.php';
             </div>
         </div>
 
-        <div class="d-none-mobile">
-            <form id="leadForm" class="lead-form">
-                <h2>Start Your Journey</h2>
-                <p>Request a free career consultation and course brochure today.</p>
+        <div class="d-none-mobile lead-form">
+            <h2>Start Your Journey</h2>
+                <p style="margin-bottom: 0px;">Request a free career consultation and course brochure today.</p>
+            <!-- <form id="leadForm" class="">
+                
                 <div class="form-group">
                     <input type="text" name="name" placeholder="Full Name" aria-label="Full Name" required>
                 </div>
@@ -69,7 +70,29 @@ include 'includes/header.php';
                 <?= niib_recaptcha_widget() ?>
                 <button type="submit">Submit Application</button>
                 <div id="leadMsg" style="margin-top:10px;"></div>
-            </form>
+            </form> -->
+            <div id="crm-form-container-56"></div>
+<script>
+(function() {
+    var container = document.getElementById('crm-form-container-56');
+    if (container) {
+        var baseUrl = 'http://crm.mediagarh.com/CRM/forms/public/56';
+        var currentUrl = window.location.href;
+        var iframeSrc = baseUrl + '?embed=1&landing_url=' + encodeURIComponent(currentUrl);
+        
+        var iframe = document.createElement('iframe');
+        iframe.id = 'crm-form-56';
+        iframe.src = iframeSrc;
+        iframe.width = '100%';
+        iframe.height = '560';
+        iframe.frameBorder = '0';
+        iframe.style.border = '0';
+        iframe.style.background = 'transparent';
+        container.appendChild(iframe);
+    }
+})();
+</script>
+
         </div>
     </div>
 </section>

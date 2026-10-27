@@ -64,16 +64,25 @@ $current_path = basename(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) 
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="dns-prefetch" href="https://fonts.googleapis.com">
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="https://fonts.gstatic.com">
 
 <!-- Sitemap + RSS hints for crawlers -->
 <link rel="sitemap" type="application/xml" title="Sitemap" href="<?= SITE_URL ?>/sitemap.xml">
 
-<!-- Stylesheets -->
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400..900;1,400..900&family=Manrope:wght@300..800&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.min.css" rel="stylesheet">
-<link href="<?= ASSETS_URL ?>/css/style.css?v=34" rel="stylesheet">
+<!-- Critical stylesheet (blocking — needed for above-the-fold render) -->
+<link href="<?= ASSETS_URL ?>/css/style.min.css?v=35" rel="stylesheet">
+
+<!-- Non-critical stylesheets: load async to avoid render-blocking -->
+<!-- Google Fonts — non-blocking via media="print" trick -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=Manrope:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+
+<!-- Bootstrap Icons — non-blocking -->
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.min.css" rel="stylesheet"></noscript>
 
 <!-- Structured data (Organization, WebSite, Breadcrumbs, page-specific) -->
 <?= niib_seo_render_schema() ?>
