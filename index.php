@@ -221,7 +221,7 @@ include 'includes/header.php';
 <!-- ============ FINAL CTA ============ -->
 <?php if (!empty($sections['cta'])): $c = $sections['cta']; ?>
 <section class="cta-section">
-    <img class="cta-bg" src="<?= e(img_url('assets/images/design/cta-campus.jpg')) ?>" alt="">
+    <img class="cta-bg" src="<?= e(img_url('assets/images/design/cta-campus.jpg')) ?>" alt="NIIB Institute campus">
     <div class="container cta-content">
         <h2><?= e($c['title']) ?></h2>
         <p><?= e($c['content'] ? strip_tags($c['content']) : 'Admissions are now open. Secure your place in the next generation of beauty masters.') ?></p>

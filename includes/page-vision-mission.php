@@ -54,7 +54,7 @@ $values = [
 @media (min-width:900px){ .vm-values-grid{ grid-template-columns:repeat(4,1fr); } }
 .vm-value{ text-align:center; padding:16px; }
 .vm-value .ico{ width:70px;height:70px;border-radius:var(--radius-full); background:rgba(254,94,30,.14); color:var(--secondary-container); display:flex;align-items:center;justify-content:center; font-size:30px; margin:0 auto 20px; }
-.vm-value h4{ color:#fff; font-size:var(--headline-sm); margin:0 0 10px; }
+.vm-value h3{ color:#fff; font-size:var(--headline-sm); margin:0 0 10px; }
 .vm-value p{ color:rgba(255,255,255,.68); font-size:14px; line-height:1.6; margin:0; }
 
 .vm-cta{ text-align:center; background:var(--surface-container-low); border:1px solid var(--outline-variant); padding:80px 40px; }
@@ -131,7 +131,7 @@ $values = [
             <?php foreach ($values as $v): ?>
             <div class="vm-value">
                 <div class="ico"><i class="bi <?= e($v['icon']) ?>"></i></div>
-                <h4><?= e($v['title']) ?></h4>
+                <h3><?= e($v['title']) ?></h3>
                 <p><?= e($v['desc']) ?></p>
             </div>
             <?php endforeach; ?>

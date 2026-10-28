@@ -579,7 +579,7 @@ try {
   <button type="button" class="lb-btn lb-close" aria-label="Close"><span class="material-symbols-outlined" style="font-size:34px">close</span></button>
   <button type="button" class="lb-btn lb-prev" aria-label="Previous"><span class="material-symbols-outlined" style="font-size:32px">chevron_left</span></button>
   <button type="button" class="lb-btn lb-next" aria-label="Next"><span class="material-symbols-outlined" style="font-size:32px">chevron_right</span></button>
-  <img alt="">
+  <img alt="NIIB Institute award and recognition">
   <div class="lb-counter"></div>
 </div>
 

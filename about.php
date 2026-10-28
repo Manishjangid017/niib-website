@@ -94,7 +94,7 @@ include 'includes/header.php';
     font-family:var(--font-body); font-size:12px; font-weight:700;
     letter-spacing:.22em; text-transform:uppercase; color:var(--secondary); margin-bottom:8px;
 }
-.leader-card .lc-name{ font-family:var(--font-headline); font-size: var(--headline-sm); margin:0 0 18px; color:var(--on-surface); }
+.leader-card .lc-name{ font-family:var(--font-headline) !important; font-size: var(--headline-sm) !important; margin:0 0 18px !important; color:var(--on-surface) !important; }
 .leader-card .lc-body p{ color:var(--on-surface-variant); font-size:15px; line-height:1.8; margin:0 0 14px; }
 .leader-card .lc-body p:last-child{ margin-bottom:0; }
 .leader-card .lc-socials{ margin-top:22px; display:flex; gap:12px; }
@@ -201,7 +201,7 @@ include 'includes/header.php';
                 <img class="lc-photo" src="<?= e(img_url($tm['image'])) ?>" alt="<?= e($tm['name']) ?>">
                 <div class="lc-body">
                     <?php if (!empty($tm['designation'])): ?><div class="lc-role"><?= e($tm['designation']) ?></div><?php endif; ?>
-                    <h3 class="lc-name"><?= e($tm['name']) ?></h3>
+                    <p class="lc-name"><?= e($tm['name']) ?></p>
                     <?= about_bio_paragraphs($tm['bio']) ?>
                     <?php if (!empty($tm['linkedin']) || !empty($tm['facebook']) || !empty($tm['instagram']) || !empty($tm['twitter'])): ?>
                     <div class="lc-socials">

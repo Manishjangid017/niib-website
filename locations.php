@@ -59,7 +59,7 @@ include 'includes/header.php';
 <!-- =============== HERO =============== -->
 <section class="loc-hero">
     <div class="loc-hero-bg">
-        <img src="<?= e(img_url('assets/images/design/cta-campus.jpg')) ?>" alt="">
+        <img src="<?= e(img_url('assets/images/design/cta-campus.jpg')) ?>" alt="NIIB Institute campuses across India">
     </div>
     <div class="container loc-hero-inner">
         <span class="section-eyebrow" style="color:var(--secondary-fixed)">National Presence</span>

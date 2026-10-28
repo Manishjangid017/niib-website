@@ -416,7 +416,15 @@ function niib_optimize_images_html(string $html): string {
             $attrs .= ' decoding="async"';
         }
         if (!preg_match('/\balt=/i', $attrs)) {
-            $attrs .= ' alt=""';   // empty alt is valid for decorative imagery
+            // Derive a meaningful alt from the title attribute when available.
+            // Uploaded media uses hashed filenames (e.g. f_6a5f…), so a
+            // filename-derived alt would be meaningless — fall back to an
+            // empty alt only when no title is present.
+            $alt = '';
+            if (preg_match('/(?:^|\s)title\s*=\s*"([^"]*)"/i', $attrs, $tm)) {
+                $alt = trim($tm[1]);
+            }
+            $attrs .= ' alt="' . htmlspecialchars($alt, ENT_QUOTES, 'UTF-8', false) . '"';
         }
         return '<img' . $attrs . '>';
     }, $html);

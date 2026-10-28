@@ -122,7 +122,7 @@ $video_testimonials = [
 
   <!-- HERO -->
   <section class="lp-hero">
-    <div class="lp-hero-bg"><img src="<?= e($hero_img) ?>" alt=""></div>
+    <div class="lp-hero-bg"><img src="<?= e($hero_img) ?>" alt="<?= e($td['hero']['title'] ?: $p['title']) ?>"></div>
     <div class="lp-container lp-hero-inner">
       <div class="lp-hero-grid">
         <div class="lp-hero-content">
@@ -210,7 +210,7 @@ $video_testimonials = [
         <?php if (!empty($td['intro']['image']) || !empty($td['intro']['quote'])): ?>
         <div class="lp-intro-image-wrap">
           <?php if (!empty($td['intro']['image'])): ?>
-            <div class="lp-intro-image"><img src="<?= e(img_url($td['intro']['image'])) ?>" alt=""></div>
+            <div class="lp-intro-image"><img src="<?= e(img_url($td['intro']['image'])) ?>" alt="<?= e($td['intro']['heading'] ?: $p['title']) ?>"></div>
           <?php endif; ?>
           <?php if (!empty($td['intro']['quote'])): ?>
             <div class="lp-intro-quote">"<?= e($td['intro']['quote']) ?>"</div>
@@ -415,7 +415,7 @@ $video_testimonials = [
       <div class="lp-gallery-grid">
         <?php foreach ($td['gallery']['images'] as $gIdx => $gi): ?>
           <div class="lp-gallery-item">
-            <img data-lb-group="gallery" data-lb-index="<?= (int)$gIdx ?>" src="<?= e(img_url($gi)) ?>" alt="" class="lp-lightbox-img">
+            <img data-lb-group="gallery" data-lb-index="<?= (int)$gIdx ?>" src="<?= e(img_url($gi)) ?>" alt="NIIB Institute campus and training facilities" class="lp-lightbox-img">
           </div>
         <?php endforeach; ?>
       </div>
@@ -562,7 +562,7 @@ $video_testimonials = [
     <button type="button" class="lb-btn lb-close" aria-label="Close"><span class="material-symbols-outlined" style="font-size:34px">close</span></button>
     <button type="button" class="lb-btn lb-prev" aria-label="Previous"><span class="material-symbols-outlined" style="font-size:32px">chevron_left</span></button>
     <button type="button" class="lb-btn lb-next" aria-label="Next"><span class="material-symbols-outlined" style="font-size:32px">chevron_right</span></button>
-    <img alt="">
+    <img alt="NIIB Institute gallery image">
     <div class="lb-counter"></div>
   </div>
   <?php endif; ?>
@@ -770,6 +770,7 @@ $video_testimonials = [
     document.querySelectorAll('#loc-template .lp-lightbox-img').forEach(function(el){
       el.addEventListener('click', function(){
         images = lbGroups[el.getAttribute('data-lb-group') || 'gallery'] || [];
+        lbImg.alt = el.alt || 'NIIB Institute gallery image';
         show(parseInt(el.dataset.lbIndex, 10) || 0);
       });
     });

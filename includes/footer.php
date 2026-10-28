@@ -41,7 +41,7 @@ $footerMenu = get_menu_items('footer');
             </div>
 
             <div class="footer-col">
-                <h4>Courses</h4>
+                <p style="text-transform:uppercase; color:white;"><b>Courses </b></p>
                 <ul>
                     <?php
                     try {
@@ -53,7 +53,7 @@ $footerMenu = get_menu_items('footer');
             </div>
 
             <div class="footer-col">
-                <h4>Institution</h4>
+             <p style="text-transform:uppercase; color:white;"><b>Institution </b></p>
                 <ul>
                     <li><a href="<?= SITE_URL ?>/about">About Us</a></li>
                     <li><a href="<?= SITE_URL ?>/placement">Placements</a></li>
@@ -63,7 +63,7 @@ $footerMenu = get_menu_items('footer');
             </div>
 
             <div class="footer-col">
-                <h4>Quick Links</h4>
+                <p style="text-transform:uppercase; color:white;"><b>Quick Links</b></p>
                 <ul>
                     <?php foreach (($footerMenu[0] ?? []) as $item):
                         $url = $item['url'];
@@ -142,7 +142,7 @@ try {
 <div class="popup-overlay" id="sitePopup">
     <div class="popup">
         <button class="close" onclick="document.getElementById('sitePopup').classList.remove('active')">&times;</button>
-        <?php if (!empty($popup['image'])): ?><img src="<?= e(img_url($popup['image'])) ?>" alt=""><?php endif; ?>
+        <?php if (!empty($popup['image'])): ?><img src="<?= e(img_url($popup['image'])) ?>" alt="<?= e($popup['title'] ?: 'NIIB Institute offer') ?>"><?php endif; ?>
         <h4><?= e($popup['title']) ?></h4>
         <p style="color:var(--on-surface-variant)"><?= e($popup['description']) ?></p>
         <?php if (!empty($popup['button_text']) && !empty($popup['button_url'])): ?>

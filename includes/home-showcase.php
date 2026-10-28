@@ -130,7 +130,7 @@ if ($sc_show('awards')  && !empty($award_images))            $lb_groups['awards'
       <div class="lp-gallery-grid">
         <?php foreach ($sc['gallery']['images'] as $gIdx => $gi): ?>
           <div class="lp-gallery-item">
-            <img data-lb-group="gallery" data-lb-index="<?= (int)$gIdx ?>" src="<?= e(img_url($gi)) ?>" alt="" class="lp-lightbox-img">
+            <img data-lb-group="gallery" data-lb-index="<?= (int)$gIdx ?>" src="<?= e(img_url($gi)) ?>" alt="NIIB Institute campus and training facilities" class="lp-lightbox-img">
           </div>
         <?php endforeach; ?>
       </div>
@@ -283,7 +283,7 @@ if ($sc_show('awards')  && !empty($award_images))            $lb_groups['awards'
     <button type="button" class="lb-btn lb-close" aria-label="Close"><span class="material-symbols-outlined" style="font-size:34px">close</span></button>
     <button type="button" class="lb-btn lb-prev" aria-label="Previous"><span class="material-symbols-outlined" style="font-size:32px">chevron_left</span></button>
     <button type="button" class="lb-btn lb-next" aria-label="Next"><span class="material-symbols-outlined" style="font-size:32px">chevron_right</span></button>
-    <img alt="">
+    <img alt="NIIB Institute gallery image">
     <div class="lb-counter"></div>
   </div>
   <?php endif; ?>
@@ -336,6 +336,7 @@ if ($sc_show('awards')  && !empty($award_images))            $lb_groups['awards'
     document.querySelectorAll('#loc-template.home-showcase .lp-lightbox-img').forEach(function(el){
       el.addEventListener('click', function(){
         images = lbGroups[el.getAttribute('data-lb-group') || 'gallery'] || [];
+        lbImg.alt = el.alt || 'NIIB Institute gallery image';
         show(parseInt(el.dataset.lbIndex, 10) || 0);
       });
     });

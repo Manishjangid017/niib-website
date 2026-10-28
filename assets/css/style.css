@@ -1412,7 +1412,7 @@ main {
   grid-template-columns: repeat(2, 1fr);
   gap: var(--stack-lg);
   align-items: center;
-  opacity: 0.55;
+  opacity: 0.9;
 }
 @media (min-width: 768px) {
   .partner-grid {
