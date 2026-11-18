@@ -135,6 +135,10 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^hoshiarpur-admission-2026/?$ landing-pages/hoshiarpur-admission-2026.php [L,QSA]
 
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^franchise-inquiry-2026/?$ landing-pages/franchise-inquiry-2026.php [L,QSA]
+
 # Dynamic page catch-all (SEO-friendly /{slug}).
 # Place LAST so all hardcoded routes (and existing files/dirs) win first.
 RewriteCond %{REQUEST_FILENAME} !-f
