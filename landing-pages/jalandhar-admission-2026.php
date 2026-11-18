@@ -14,8 +14,8 @@ try {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Phagwara Admission 2026 — New Image International Beauty Institute</title>
-  <meta name="description" content="Enrol at NIIB Phagwara Signature Learning Center. World-class beauty &amp; aesthetics education. Admission open for 2026 batch.">
+  <title>Jalandhar Admission 2026 — New Image International Beauty Institute</title>
+  <meta name="description" content="Enrol at NIIB Jalandhar. World-class beauty &amp; aesthetics education. Admission open for 2026 batch. Book your free consultation today.">
   <meta name="robots" content="noindex, nofollow">
   <?php
   $favicon_url = 'https://newimageinstitute.com/assets/images/favicon.ico';
@@ -101,8 +101,19 @@ try {
   </style>
 
   <?= render_header_codes('head') ?>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-K5GSV965');</script>
+  <!-- End Google Tag Manager -->
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K5GSV965"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <?= render_header_codes('body_start') ?>
 
 <!-- HEADER -->

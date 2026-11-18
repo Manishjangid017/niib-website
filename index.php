@@ -20,6 +20,12 @@ try {
     if ($homeFaqs) niib_seo_add_schema(niib_seo_faq($homeFaqs));
 } catch (Throwable $e) {}
 
+// Pass hero image URL to header.php so it can emit a <link rel="preload"> early
+// This tells the browser to start downloading the LCP image immediately during HTML parse
+if ($slide && !empty($slide['image'])) {
+    $lcp_preload_url = img_url($slide['image']);
+}
+
 include 'includes/header.php';
 ?>
 
@@ -27,7 +33,7 @@ include 'includes/header.php';
 <?php if ($slide): ?>
 <section class="hero">
     <div class="hero-media">
-        <img src="<?= e(img_url($slide['image'])) ?>" alt="<?= e($slide['title']) ?>">
+        <img src="<?= e(img_url($slide['image'])) ?>" alt="<?= e($slide['title']) ?>" fetchpriority="high" loading="eager" decoding="async" width="1440" height="900">
     </div>
     <div class="container hero-grid">
         <div>
@@ -71,24 +77,34 @@ include 'includes/header.php';
                 <button type="submit">Submit Application</button>
                 <div id="leadMsg" style="margin-top:10px;"></div>
             </form> -->
-            <div id="crm-form-container-56"></div>
+            <div id="crm-form-container-56" style="min-height:560px;"></div>
 <script>
 (function() {
-    var container = document.getElementById('crm-form-container-56');
-    if (container) {
-        var baseUrl = 'http://crm.mediagarh.com/CRM/forms/public/56';
-        var currentUrl = window.location.href;
-        var iframeSrc = baseUrl + '?embed=1&landing_url=' + encodeURIComponent(currentUrl);
-        
+    var cid = 'crm-form-container-56';
+    function load() {
+        var c = document.getElementById(cid);
+        if (!c || c.dataset.loaded) return;
+        c.dataset.loaded = '1';
         var iframe = document.createElement('iframe');
         iframe.id = 'crm-form-56';
-        iframe.src = iframeSrc;
+        iframe.src = 'https://crm.mediagarh.com/CRM/forms/public/56?embed=1&landing_url=' + encodeURIComponent(window.location.href);
         iframe.width = '100%';
         iframe.height = '560';
         iframe.frameBorder = '0';
         iframe.style.border = '0';
         iframe.style.background = 'transparent';
-        container.appendChild(iframe);
+        c.appendChild(iframe);
+    }
+    if ('IntersectionObserver' in window) {
+        var el = document.getElementById(cid);
+        if (el) {
+            var io = new IntersectionObserver(function(entries) {
+                if (entries[0].isIntersecting) { io.disconnect(); load(); }
+            }, { rootMargin: '300px' });
+            io.observe(el);
+        }
+    } else {
+        load();
     }
 })();
 </script>
@@ -114,7 +130,7 @@ include 'includes/header.php';
         <?php if (count($courses) >= 5): ?>
         <div class="bento-grid">
             <a class="bento-card featured" href="<?= SITE_URL ?>/course/<?= e($courses[0]['slug']) ?>">
-                <img src="<?= e(img_url($courses[0]['image'])) ?>" alt="<?= e($courses[0]['title']) ?>">
+                <img src="<?= e(img_url($courses[0]['image'])) ?>" alt="<?= e($courses[0]['title']) ?>" width="800" height="600">
                 <div class="bento-content">
                     <span class="tag">Flagship Program</span>
                     <h3><?= e($courses[0]['title']) ?></h3>
@@ -123,7 +139,7 @@ include 'includes/header.php';
                 </div>
             </a>
             <a class="bento-card tall" href="<?= SITE_URL ?>/course/<?= e($courses[1]['slug']) ?>">
-                <img src="<?= e(img_url($courses[1]['image'])) ?>" alt="<?= e($courses[1]['title']) ?>">
+                <img src="<?= e(img_url($courses[1]['image'])) ?>" alt="<?= e($courses[1]['title']) ?>" width="600" height="800">
                 <div class="bento-content">
                     <h3><?= e($courses[1]['title']) ?></h3>
                     <p><?= e(excerpt($courses[1]['short_description'],18)) ?></p>
@@ -132,7 +148,7 @@ include 'includes/header.php';
             </a>
             <?php for ($i = 2; $i < 5; $i++): ?>
             <a class="bento-card third" href="<?= SITE_URL ?>/course/<?= e($courses[$i]['slug']) ?>">
-                <img src="<?= e(img_url($courses[$i]['image'])) ?>" alt="<?= e($courses[$i]['title']) ?>">
+                <img src="<?= e(img_url($courses[$i]['image'])) ?>" alt="<?= e($courses[$i]['title']) ?>" width="400" height="400">
                 <div class="bento-content">
                     <h3 style="font-size:24px;"><?= e($courses[$i]['title']) ?></h3>
                     <span class="view-link">View Course</span>
@@ -144,7 +160,7 @@ include 'includes/header.php';
         <div class="course-list-grid">
             <?php foreach ($courses as $c): ?>
             <div class="course-card">
-                <img class="card-img" src="<?= e(img_url($c['image'])) ?>" alt="<?= e($c['title']) ?>">
+                <img class="card-img" src="<?= e(img_url($c['image'])) ?>" alt="<?= e($c['title']) ?>" width="400" height="260">
                 <div class="card-body">
                     <span class="cat"><?= e($c['cat_name']) ?></span>
                     <h5><a href="<?= SITE_URL ?>/course/<?= e($c['slug']) ?>"><?= e($c['title']) ?></a></h5>
@@ -188,7 +204,7 @@ include 'includes/header.php';
             <?php endif; ?>
         </div>
         <div class="image-frame">
-            <img src="<?= e(img_url('uploads/media/f_6a5f6237b1966_1784635959.jpeg')) ?>" alt="NIIB Classroom">
+            <img src="<?= e(img_url('uploads/media/f_6a5f6237b1966_1784635959.jpeg')) ?>" alt="NIIB Classroom" width="600" height="600">
             <div class="float-badge">
                 <i class="bi bi-award-fill" style="font-size:32px;margin-bottom:12px;display:block"></i>
                 <p class="badge-quote">"The gold standard in aesthetic education."</p>
@@ -221,7 +237,7 @@ include 'includes/header.php';
 <!-- ============ FINAL CTA ============ -->
 <?php if (!empty($sections['cta'])): $c = $sections['cta']; ?>
 <section class="cta-section">
-    <img class="cta-bg" src="<?= e(img_url('assets/images/design/cta-campus.jpg')) ?>" alt="NIIB Institute campus">
+    <img class="cta-bg" src="<?= e(img_url('assets/images/design/cta-campus.jpg')) ?>" alt="NIIB Institute campus" width="1440" height="600">
     <div class="container cta-content">
         <h2><?= e($c['title']) ?></h2>
         <p><?= e($c['content'] ? strip_tags($c['content']) : 'Admissions are now open. Secure your place in the next generation of beauty masters.') ?></p>

@@ -146,7 +146,7 @@ $video_testimonials = [
           <div class="lp-hero-form">
             <p class="lp-hero-form-title">Book a Free Consultation</p>
             <p class="lp-hero-form-sub">Share your details and our counsellor will call you back.</p>
-              <div id="crm-form-container-50"></div>
+              <div id="crm-form-container-50" style="min-height:420px;"></div>
               <script>
               (function() {
                   var cid = 'crm-form-container-50';

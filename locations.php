@@ -365,7 +365,7 @@ include 'includes/header.php';
             <button type="submit" class="btn btn-cta btn-lg" style="margin-top:24px;">Submit Inquiry</button>
             <div id="contactMsg" style="margin-top:16px;"></div>
         </form> -->
-          <div id="crm-form-container-56"></div>
+          <div id="crm-form-container-56" style="min-height:440px;"></div>
 <script>
 (function() {
     var cid = 'crm-form-container-56';

@@ -64,10 +64,11 @@ $current_path = basename(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) 
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://crm.mediagarh.com" crossorigin>
 <link rel="dns-prefetch" href="https://fonts.googleapis.com">
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+<link rel="dns-prefetch" href="https://crm.mediagarh.com">
 
 <!-- Sitemap + RSS hints for crawlers -->
 <link rel="sitemap" type="application/xml" title="Sitemap" href="<?= SITE_URL ?>/sitemap.xml">
@@ -75,10 +76,15 @@ $current_path = basename(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) 
 <!-- Critical stylesheet (blocking — needed for above-the-fold render) -->
 <link href="<?= ASSETS_URL ?>/css/style.min.css?v=35" rel="stylesheet">
 
+<?php if (!empty($lcp_preload_url)): ?>
+<!-- LCP image preload: browser fetches hero image as early as possible, before layout -->
+<link rel="preload" as="image" href="<?= e($lcp_preload_url) ?>" fetchpriority="high">
+<?php endif; ?>
+
 <!-- Non-critical stylesheets: load async to avoid render-blocking -->
-<!-- Google Fonts — non-blocking via media="print" trick -->
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=Manrope:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+<!-- Google Fonts — non-blocking via media="print" trick, font-display:optional prevents LCP/TBT penalty -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=Manrope:wght@400;500;600;700&display=optional" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=Manrope:wght@400;500;600;700&display=optional" rel="stylesheet"></noscript>
 
 <!-- Bootstrap Icons — non-blocking -->
 <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -97,8 +103,23 @@ $current_path = basename(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) 
 <?= render_header_codes('head') ?>
 <?= niib_recaptcha_head() ?>
 <style id="admin-custom-css"><?= render_custom_css() ?></style>
+<?php if (!empty($inject_gtm)): ?>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-K5GSV965');</script>
+  <!-- End Google Tag Manager -->
+<?php endif; ?>
 </head>
 <body>
+<?php if (!empty($inject_gtm)): ?>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K5GSV965"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<?php endif; ?>
 <?= render_header_codes('body_start') ?>
 
 <header class="site-header">
@@ -129,7 +150,7 @@ $current_path = basename(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) 
     <div class="nav-wrap"><div class="container nav-row">
         <a class="brand" href="<?= SITE_URL ?>/">
             <?php $logo = setting('site_logo'); if ($logo && file_exists(BASE_PATH . '/' . ltrim($logo,'/'))): ?>
-                <img src="<?= e(img_url($logo)) ?>" alt="<?= e(setting('site_name','NIIB Institute')) ?>">
+                <img src="<?= e(img_url($logo)) ?>" alt="<?= e(setting('site_name','NIIB Institute')) ?>" width="160" height="44">
             <?php else: ?>
                 <span><?= e(setting('site_name','NIIB Institute')) ?></span>
             <?php endif; ?>

@@ -250,7 +250,7 @@ include 'includes/header.php';
                     <div id="enquiryMsg" style="margin-top:10px;font-size:14px;"></div>
                 </form> -->
 
-                <div id="crm-form-container-56"></div>
+                <div id="crm-form-container-56" style="min-height:560px;"></div>
 <script>
 (function() {
     var cid = 'crm-form-container-56';

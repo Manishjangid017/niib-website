@@ -138,26 +138,98 @@ $footerMenu = get_menu_items('footer');
 try {
     $popup = db()->query("SELECT * FROM popup_settings WHERE status=1 ORDER BY id DESC LIMIT 1")->fetch();
     if ($popup):
+        // Encode popup data as JSON — JS will build and inject the DOM after LCP fires.
+        // This keeps popup HTML out of the initial parse so the hero (LCP element)
+        // is not competing with the popup image for bandwidth on first load.
+        $popupJson = json_encode([
+            'image'       => $popup['image'] ? img_url($popup['image']) : '',
+            'title'       => $popup['title'],
+            'description' => $popup['description'],
+            'button_text' => $popup['button_text'] ?? '',
+            'button_url'  => !empty($popup['button_url']) ? niib_link($popup['button_url']) : '',
+            'show_once'   => (int)$popup['show_once'],
+            'delay'       => (int)$popup['delay_seconds'] * 1000,
+            'img_alt'     => $popup['title'] ?: 'NIIB Institute offer',
+        ], JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_SLASHES);
 ?>
-<div class="popup-overlay" id="sitePopup">
-    <div class="popup">
-        <button class="close" onclick="document.getElementById('sitePopup').classList.remove('active')">&times;</button>
-        <?php if (!empty($popup['image'])): ?><img src="<?= e(img_url($popup['image'])) ?>" alt="<?= e($popup['title'] ?: 'NIIB Institute offer') ?>"><?php endif; ?>
-        <h4><?= e($popup['title']) ?></h4>
-        <p style="color:var(--on-surface-variant)"><?= e($popup['description']) ?></p>
-        <?php if (!empty($popup['button_text']) && !empty($popup['button_url'])): ?>
-            <a href="<?= e(niib_link($popup['button_url'])) ?>" class="btn btn-cta" style="display:block;text-align:center"><?= e($popup['button_text']) ?></a>
-        <?php endif; ?>
-    </div>
-</div>
 <script>
 (function(){
-    var showOnce = <?= (int)$popup['show_once'] ?>;
-    if (showOnce && localStorage.getItem('niib_popup_seen')) return;
-    setTimeout(function(){
-        document.getElementById('sitePopup').classList.add('active');
-        if (showOnce) localStorage.setItem('niib_popup_seen','1');
-    }, <?= (int)$popup['delay_seconds'] * 1000 ?>);
+    var cfg = <?= $popupJson ?>;
+    if (cfg.show_once && localStorage.getItem('niib_popup_seen')) return;
+
+    function buildPopup() {
+        // Overlay
+        var overlay = document.createElement('div');
+        overlay.className = 'popup-overlay';
+        overlay.id = 'sitePopup';
+
+        // Inner box
+        var box = document.createElement('div');
+        box.className = 'popup';
+
+        // Close button
+        var btn = document.createElement('button');
+        btn.className = 'close';
+        btn.innerHTML = '&times;';
+        btn.setAttribute('aria-label', 'Close');
+        btn.onclick = function(){ overlay.classList.remove('active'); };
+        box.appendChild(btn);
+
+        // Image (lazy — not competing with LCP hero)
+        if (cfg.image) {
+            var img = document.createElement('img');
+            img.src = cfg.image;
+            img.alt = cfg.img_alt;
+            img.loading = 'lazy';
+            img.decoding = 'async';
+            box.appendChild(img);
+        }
+
+        // Title
+        if (cfg.title) {
+            var h4 = document.createElement('h4');
+            h4.textContent = cfg.title;
+            box.appendChild(h4);
+        }
+
+        // Description
+        if (cfg.description) {
+            var p = document.createElement('p');
+            p.style.color = 'var(--on-surface-variant)';
+            p.textContent = cfg.description;
+            box.appendChild(p);
+        }
+
+        // CTA button
+        if (cfg.button_text && cfg.button_url) {
+            var a = document.createElement('a');
+            a.href = cfg.button_url;
+            a.className = 'btn btn-cta';
+            a.style.cssText = 'display:block;text-align:center';
+            a.textContent = cfg.button_text;
+            box.appendChild(a);
+        }
+
+        overlay.appendChild(box);
+        // Close on backdrop click
+        overlay.addEventListener('click', function(e){
+            if (e.target === overlay) overlay.classList.remove('active');
+        });
+        document.body.appendChild(overlay);
+
+        // Show after delay
+        setTimeout(function(){
+            overlay.classList.add('active');
+            if (cfg.show_once) localStorage.setItem('niib_popup_seen', '1');
+        }, cfg.delay);
+    }
+
+    // Wait for LCP/load event before injecting popup DOM
+    if (document.readyState === 'complete') {
+        setTimeout(buildPopup, 300);
+    } else {
+        window.addEventListener('load', function(){ setTimeout(buildPopup, 300); });
+    }
 })();
 </script>
 <?php endif; } catch (Throwable $e) {} ?>
