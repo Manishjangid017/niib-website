@@ -207,16 +207,17 @@ $dev_url      = 'https://mediagarh.com/';
 
   <?= render_header_codes('head') ?>
   <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-K5GSV965');</script>
+  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-MWRVQW62"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  </script>
   <!-- End Google Tag Manager -->
 </head>
 <body class="niib-fr">
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K5GSV965"
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MWRVQW62"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 <?= render_header_codes('body_start') ?>
@@ -731,118 +732,78 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
 
   /* ---------- Arrow icon flip (top to bottom) on click ---------- */
-  document.querySelectorAll('.niib-t-arrow').forEach(function (btn) {
-    var icon = btn.querySelector('.niib-t-icon'), turns = 0;
+  document.querySelectorAll('.niib-t-arrow').forEach(function (arrowBtn) {
+    var icon = arrowBtn.querySelector('.niib-t-icon'), turns = 0;
     if (!icon) return;
-    btn.addEventListener('click', function () {
+    arrowBtn.addEventListener('click', function () {
       turns++;
       icon.style.transform = 'rotateX(' + (turns * 180) + 'deg)';
     });
   });
 
-  /* ---------- Form — API submit ---------- */
-  var form = document.getElementById('niibForm'),
-      msg  = document.getElementById('niibFormMsg'),
-      btn  = document.getElementById('niibFormBtn');
+  /* ---------- Form — Google Apps Script submit ---------- */
+  var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzmTi2cnBmQrRmNjDQ_Rq3fcKaEe5ylE7KVK-4XdegeZlTs56k3ccDB82S88wsMdGmpFw/exec';
 
-  form.addEventListener('submit', function (e) {
+  var niibForm = document.getElementById('niibForm'),
+      niibMsg  = document.getElementById('niibFormMsg'),
+      niibBtn  = document.getElementById('niibFormBtn');
+
+  niibForm.addEventListener('submit', function (e) {
     e.preventDefault();
-    msg.className = 'niib-form__msg';
+    niibMsg.className = 'niib-form__msg';
 
-    var name        = form.name.value.trim(),
-        mobile      = form.mobile.value.replace(/\D/g, ''),
-        email       = form.email.value.trim(),
-        city        = form.city.value.trim(),
-        investment  = form.investment.value,
-        spaceAccess = form.space_access.value,
-        spaceSize   = form.space_size.value,
-        location    = form.location.value.trim();
+    var name        = niibForm.name.value.trim(),
+        mobile      = niibForm.mobile.value.replace(/\D/g, ''),
+        email       = niibForm.email.value.trim(),
+        city        = niibForm.city.value.trim(),
+        investment  = niibForm.investment.value,
+        spaceAccess = niibForm.space_access.value,
+        spaceSize   = niibForm.space_size.value,
+        location    = niibForm.location.value.trim();
 
     // Honeypot
-    if (form.website.value) return;
+    if (niibForm.website.value) return;
 
     // Validation
-    if (!name) { showErr('Please enter your full name.'); return; }
-    if (mobile.length < 10) { showErr('Please enter a valid 10-digit mobile number.'); return; }
-    if (!/^\S+@\S+\.\S+$/.test(email)) { showErr('Please enter a valid email address.'); return; }
-    if (!city) { showErr('Please enter your city.'); return; }
-    if (!investment) { showErr('Please select your investment budget.'); return; }
-    if (!spaceAccess) { showErr('Please select a space access option.'); return; }
-    if (!spaceSize) { showErr('Please select your available space size.'); return; }
+    if (!name)                               { showErr('Please enter your full name.'); return; }
+    if (mobile.length < 10)                  { showErr('Please enter a valid 10-digit mobile number.'); return; }
+    if (!/^\S+@\S+\.\S+$/.test(email))       { showErr('Please enter a valid email address.'); return; }
+    if (!city)                               { showErr('Please enter your city.'); return; }
+    if (!investment)                         { showErr('Please select your investment budget.'); return; }
+    if (!spaceAccess)                        { showErr('Please select a space access option.'); return; }
+    if (!spaceSize)                          { showErr('Please select your available space size.'); return; }
 
-    btn.disabled = true;
-    btn.textContent = 'Submitting…';
+    niibBtn.disabled    = true;
+    niibBtn.textContent = 'Submitting\u2026';
 
-    // UTM params
-    var params = new URLSearchParams(window.location.search);
+    var data = new URLSearchParams();
+    data.append('name',         name);
+    data.append('mobile',       mobile);
+    data.append('email',        email);
+    data.append('city',         city);
+    data.append('investment',   investment);
+    data.append('space_access', spaceAccess);
+    data.append('space_size',   spaceSize);
+    data.append('location',     location);
+    data.append('page_url',     window.location.href);
 
-    var payload = {
-      form_id:       57,
-      first_name:    name,
-      last_name:     '',
-      email:         email,
-      phone:         mobile,
-      utm_source:    params.get('utm_source')   || '',
-      utm_medium:    params.get('utm_medium')   || '',
-      utm_campaign:  params.get('utm_campaign') || '',
-      landing_url:   window.location.href,
-      referrer_url:  document.referrer || '',
-      custom_fields: {
-        'field_field_1792822783043_oev9z': {
-          label: 'Name', type: 'text', value: name, map_to: 'first_name'
-        },
-        'field_field_1792822783899_wuj8k': {
-          label: 'Phone Number', type: 'phone', value: mobile, map_to: 'phone_number'
-        },
-        'field_field_1792822786163_qwehl': {
-          label: 'Email Address', type: 'email', value: email, map_to: 'email'
-        },
-        'field_field_1792822792594_cf79s': {
-          label: 'City', type: 'text', value: city, map_to: 'city'
-        },
-        'field_field_1795090325082_wfabi': {
-          label: 'What is your planned investment budget for the franchise?',
-          type: 'select', value: investment, map_to: 'investment_range'
-        },
-        'field_field_1795090376749_9n77e': {
-          label: 'Do you own or have access to suitable commercial space?',
-          type: 'select', value: spaceAccess, map_to: 'suitable_commercial_space'
-        },
-        'field_field_1795090475931_ruv4r': {
-          label: 'What is the approximate size of your available space?',
-          type: 'select', value: spaceSize, map_to: 'approximate_size_of_your_available_space'
-        },
-        'field_field_1795090520798_7w670': {
-          label: 'Location you want to start in Haryana?',
-          type: 'text', value: location, map_to: 'start_in_haryana'
-        }
-      }
-    };
-
-    fetch('https://crm.mediagarh.com/CRM/api/leads/create', {
-      method:  'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Api-Key':    'b62d20f5cd5e82d3ee1cfe7fc85cccbbe43db37e36830923557c912602afe023'
-      },
-      body: JSON.stringify(payload)
-    })
-    .then(function (r) {
-      if (!r.ok) throw new Error('Server error ' + r.status);
-      return r.json();
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode:   'no-cors',
+      body:   data
     })
     .then(function () {
-      window.location.href = 'https://newimageinstitute.com/thank-you';
+      window.location.href = 'https://newimageinstitute.com/thank-you-franchise';
     })
     .catch(function () {
       showErr('Something went wrong. Please try again or call us directly.');
-      btn.disabled = false;
-      btn.textContent = 'Request Franchise Proposal';
+      niibBtn.disabled    = false;
+      niibBtn.textContent = 'Request Franchise Proposal';
     });
 
     function showErr(text) {
-      msg.textContent = text;
-      msg.classList.add('is-err');
+      niibMsg.textContent = text;
+      niibMsg.classList.add('is-err');
     }
   });
 
